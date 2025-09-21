@@ -79,7 +79,7 @@ class Directive extends Employee {
     }
 
     public void addSubordinate(Employee subordinate) {
-        boolean subordinateCheck = true;    // aqui se comprueba la validez del objeto subordinate
+        boolean subordinateCheck = true;    // this subordinateCheck validates the added object
         if (subordinateCheck)
             subordinates.add(subordinate);
     }

@@ -1,8 +1,8 @@
 import java.util.HashSet;
 import java.util.Set;
 
-/*/ Todas las clases estan en el mismo archivo para facilitar la correcion /*/
-/*/ clases enumeradas /*/
+/*/ All clases are in the same file to make easier the correction tasks /*/
+/*/ enumeration classes are public /*/
 enum PaintType {
     OIL,
     PASTEL,
@@ -45,7 +45,7 @@ public class Author {
 
     // Functions with managing purposes of the collection of artworks
     public void addArtwork(Artwork artwork) {
-        boolean artworkCheck = true; // aqui se comprueba la validez del objeto artwork
+        boolean artworkCheck = true; // // this subordinateCheck validates the added object
         if (artworkCheck)
             artworksSet.add(artwork);
     }
@@ -56,6 +56,7 @@ public class Author {
     }
 }
 
+// Each public class in a separated file with same name
 class Artwork {
     private String title;
     private Museum museum;

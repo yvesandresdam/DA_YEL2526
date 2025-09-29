@@ -1,0 +1,23 @@
+EXERCISE 5.4.2
+    Write a program to sort alphabetically two files previously sorted (the
+    name of the files will be provided by the user). The destination file will be
+    “sorted.txt”.
+    For example, if the file 1 contains the lines:
+    Car
+    Horse
+    Ship
+    And the file 2 contains:
+    Alley
+    Cat
+    Horn
+    Show
+    Tree
+    The file “sorted.txt” will contain:
+    Alley
+    Car
+    Cat
+    Horn
+    Horse
+    Ship
+    Show
+    Tree

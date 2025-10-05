@@ -18,4 +18,5 @@ public class UI {
     public final static String INSERT_MOVIL = "Insert the MOVIL of the contact";
     public final static String INSERT_DESCRIPTION = "Insert the DESCRIPTION of the contact";
     public final static String CONTACT_FOUND = "The contact has been found";
+    public final static String CONTACT_FIND_WITH_NAME = "Please, insert the name of the contact";
 }

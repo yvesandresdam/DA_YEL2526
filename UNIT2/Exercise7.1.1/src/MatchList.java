@@ -5,12 +5,11 @@ import java.util.Scanner;
 
 public class MatchList {
     // Atributes
-    private Contact contact;
     private final static String filepath = MyFiles.FILE_PATH;
     private boolean flag = true;
-    private int contactsNumber = 0;
+    private int contactsCount;
 
-
+    // main function
     public void launchApp() {
         // Splash Screen
         displaySplashScreen();
@@ -36,7 +35,7 @@ public class MatchList {
 
             // Find a contact
             if (usersOption.equals(OptionsType.FIND))
-                findContact(new Contact());
+                findContact();
 
             // List all contacts
             if (usersOption.equals(OptionsType.LIST))
@@ -50,45 +49,44 @@ public class MatchList {
         System.out.println(UI.EXITING_THE_APP);
     }
 
+    // displays welcom screen
     private void displaySplashScreen() {
         String splash = UI.SPLASH_SCREEN;
         System.out.println(splash);
     }
 
+    // returns true if file already exists
     private boolean contactsFileExists() {
         File contactsFile = new File(filepath);
         return (contactsFile.exists());
     }
 
+    // opens the file and updates the number of contacts
     private void openFile() {
-        BufferedReader reader;
+        ObjectInputStream input;
         try {
-            reader = new BufferedReader(new FileReader(filepath));
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            contactsNumber = Integer.parseInt(reader.readLine());
+            input = new ObjectInputStream(new FileInputStream(new File(filepath)));
+            contactsCount = input.readInt();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    // creates the file with 0 contacts
     private void createFile() {
-        PrintWriter writer;
+        ObjectOutputStream output;
 
         try {
-            writer = new PrintWriter(new BufferedWriter(new FileWriter(filepath)));
+            output = new ObjectOutputStream(new FileOutputStream(new File(filepath)));
+            contactsCount = 0;
+            output.writeInt(contactsCount);
+            output.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        writer.println(0);
-
     }
 
+    // displays the users selection menu
     private void displayUsersMenu() {
         String usersMenu = UI.USER_SELECTION_MENU;
         String usersMenu1 = UI.USER_SELECTION_OPTION1;
@@ -97,30 +95,54 @@ public class MatchList {
         System.out.printf("%s\n%s\n%s\n%s\n", usersMenu, usersMenu1, usersMenu2, usersMenu3);
     }
 
+    // navigates to the users selection
     private OptionsType setUserOption() {
         Scanner scanner = new Scanner(System.in);
         String userSelection = scanner.nextLine();
+        OptionsType optionResult = OptionsType.UNKNOWN;
         boolean flag = true;
         while (flag) {
-            if (userSelection.equals("1"))
-                return OptionsType.ADD;
-            else if (userSelection.equals("2"))
-                return OptionsType.FIND;
-            else if (userSelection.equals("3"))
-                return OptionsType.LIST;
-            System.out.println(UI.INVALID_OPTION);
+            if (userSelection.equals("1")) {
+                optionResult = OptionsType.ADD;
+                flag = false;
+            } else if (userSelection.equals("2")) {
+                optionResult = OptionsType.FIND;
+                flag = false;
+            } else if (userSelection.equals("3")) {
+                optionResult = OptionsType.LIST;
+                flag = false;
+            } else {
+                System.out.println(UI.INVALID_OPTION);
+            }
         }
-        return OptionsType.UNKNOWN;
+        return optionResult;
     }
 
-    private boolean mainLoopCondition() {
-        System.out.println(UI.EXIT_THE_APP);
-        Scanner scanner = new Scanner(System.in);
-        String userschoice = scanner.nextLine();
-        return (userschoice.toLowerCase().equals("y"));
-    }
-
+    // function that adds a contact
     private void addContact() {
+        // Create a new contact
+        Contact contact = createContact();
+
+        // Contacts in agenda
+        List<Contact> contactlist = getAgendaContacts();
+        contactsCount = contactlist.size();
+
+        ObjectOutputStream output;
+
+        try {
+            output = new ObjectOutputStream(new FileOutputStream(new File(filepath)));
+            output.writeInt(contactsCount + 1);
+            for (int i = 0; i < contactsCount; i++) {
+                output.writeObject(contactlist.get(i));
+            }
+            output.writeObject(contact);
+            output.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Contact createContact() {
         Contact contact = new Contact();
         Scanner scanner = new Scanner(System.in);
 
@@ -144,86 +166,53 @@ public class MatchList {
         String description = scanner.nextLine();
         contact.setDescription(description);
 
-        ObjectOutputStream newContact;
-
-        try {
-            newContact = new ObjectOutputStream(new FileOutputStream(filepath));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            newContact.write(contactsNumber++);
-            newContact.writeObject(contact);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return contact;
     }
 
-    private void findContact(Contact contact) {
-        ObjectInputStream contactsFile;
+    // returns a list with the contact already in agenda
+    private List<Contact> getAgendaContacts() {
+        List<Contact> listResult = new ArrayList<>();
+        ObjectInputStream input;
 
         try {
-            contactsFile = new ObjectInputStream(new FileInputStream(filepath));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        int contactsNumber;
-
-        try {
-            contactsNumber = contactsFile.read();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        List<Contact> contactList = new ArrayList<>();
-
-        for(int i = 0; i < contactsNumber; i++){
-            try {
-                Contact c = (Contact) contactsFile.readObject();
-                if(contact.equals(c))
-                    System.out.println(UI.CONTACT_FOUND);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+            input = new ObjectInputStream(new FileInputStream(new File(filepath)));
+            contactsCount = input.readInt();
+            for (int i = 0; i < contactsCount; i++) {
+                listResult.add((Contact) input.readObject());
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
+        return listResult;
+    }
 
-        for(Contact c : contactList){
-            String name = c.getName();
-            String surname = c.getSurname();
-            String email = c.getEmail();
-            String movil = c.getPhone();
-            String description = c.getDescription();
+    private void findContact() {
+        System.out.println(UI.CONTACT_FIND_WITH_NAME);
+        Scanner scanner = new Scanner(System.in);
+        String findUser = scanner.nextLine();
 
-            System.out.printf("The users in the contact list are:\n%s\n%s\n%s\n%s\n%s", name, surname, email, movil, description);
+        List<Contact> contactsList = getAgendaContacts();
+        for(Contact c : contactsList){
+            if(c.getName().equals(findUser))
+                System.out.printf("The user is:\n%s\n%s\n%s\n%s\n%s\n", c.getName(), c.getSurname(), c.getEmail(), c.getPhone(), c.getDescription());
         }
-
-
     }
 
     private void listContacts() {
         ObjectInputStream contactsFile;
 
         try {
-            contactsFile = new ObjectInputStream(new FileInputStream(filepath));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        int contactsNumber;
-
-        try {
-            contactsNumber = contactsFile.read();
+            contactsFile = new ObjectInputStream(new FileInputStream(new File(filepath)));
+            contactsCount = contactsFile.readInt();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         List<Contact> contactList = new ArrayList<>();
 
-        for(int i = 0; i < contactsNumber; i++){
+        for (int i = 0; i < contactsCount; i++) {
             try {
                 Contact c = (Contact) contactsFile.readObject();
                 contactList.add(c);
@@ -234,60 +223,21 @@ public class MatchList {
             }
         }
 
-        for(Contact c : contactList){
+        for (Contact c : contactList) {
             String name = c.getName();
             String surname = c.getSurname();
             String email = c.getEmail();
             String movil = c.getPhone();
             String description = c.getDescription();
 
-            System.out.printf("The users in the contact list are:\n%s\n%s\n%s\n%s\n%s", name, surname, email, movil, description);
+            System.out.printf("The users in the contact list are:\n%s\n%s\n%s\n%s\n%s\n", name, surname, email, movil, description);
         }
     }
 
-
-    private void addContactFirstDraft() {
-        // First draft of the app
-        // CREATING A NEW CONTACT
-
-        contact = new Contact();
-        contact.setName("Amanda");
-
-        ObjectOutputStream object;
-
-        try {
-            object = new ObjectOutputStream(new FileOutputStream(filepath));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            object.writeObject(contact);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void listAllMatchesFirstDraft() {
-        // First draft of the app
-        // LISTING MATCHES
-        ObjectInputStream contactsList;
-        Contact contact;
-
-        try {
-            contactsList = new ObjectInputStream(new FileInputStream(new File(filepath)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            contact = (Contact) contactsList.readObject();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("Contact name:" + contact.getName());
-
+    private boolean mainLoopCondition() {
+        System.out.println(UI.EXIT_THE_APP);
+        Scanner scanner = new Scanner(System.in);
+        String userschoice = scanner.nextLine();
+        return (userschoice.toLowerCase().equals("y"));
     }
 }

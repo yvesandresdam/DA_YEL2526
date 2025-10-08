@@ -10,12 +10,23 @@ import java.util.List;
 public class ParserApp {
     private final static String file = "contacts.obj";
     private final static String fileXML = "testing.xml";
+    private List<Contact> contactsList = new ArrayList<>();
 
     public void launch() {
+        // creates a new .obj file
         createFile();
+        // adds a contact to .obj file
         addContact();
-        displayFile();
+        // displays the .obj contact file
+        visualizeFile();
+        // parses an XML file to a contacts list
         saxParseXML();
+        // displays the .xml file
+        visualizeParser();
+        // adds the .xml file to the .obj contacts file
+        XMLImport();
+        // adds the .obj contacts file to the .xml file
+        XMLExport();
     }
 
     private void createFile() {
@@ -48,7 +59,7 @@ public class ParserApp {
         }
     }
 
-    private void displayFile() {
+    private void visualizeFile() {
         // shows the content of the contacts file
         ObjectInputStream input;
         List<Contact> contactsList = new ArrayList<>();
@@ -70,10 +81,9 @@ public class ParserApp {
             System.out.println("Contacts from object file: " + c.getName());
     }
 
-    public void saxParseXML(){
+    public void saxParseXML() {
         XMLParserHandler handler = new XMLParserHandler();
         SAXParser saxParser;
-        List<Contact> parseContactList;
         try {
             saxParser = SAXParserFactory.newInstance().newSAXParser();
         } catch (ParserConfigurationException e) {
@@ -84,14 +94,33 @@ public class ParserApp {
 
         try {
             saxParser.parse(fileXML, handler);
-            parseContactList = handler.XMLtoList();
+            contactsList = handler.XMLtoList();
         } catch (SAXException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        for(Contact c: parseContactList)
-            System.out.println("Contacts from the XML: " + c.getName());
     }
+
+    private void visualizeParser() {
+        int count = 0;
+        for (Contact c : contactsList) {
+            count++;
+            System.out.printf("Contact " + count + " from the XML:\n");
+            System.out.printf("Name: " + c.getName() + "\n");
+            System.out.printf("Surname: " + c.getSurname() + "\n");
+            System.out.printf("Email: " + c.getEmail() + "\n");
+            System.out.printf("Phone: " + c.getPhone() + "\n");
+            System.out.printf("Description: " + c.getDescription() + "\n\n");
+        }
+    }
+
+    private void XMLImport(){
+
+    }
+
+    private void XMLExport(){
+
+    }
+
 }

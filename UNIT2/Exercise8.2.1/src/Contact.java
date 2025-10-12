@@ -1,8 +1,8 @@
 public class Contact {
     private String name;
     private String surname;
-    private String email;
-    private String phone;
+    private Email email = new Email();
+    private Phone phone = new Phone();
 
     public String getName() {
         return name;
@@ -20,19 +20,70 @@ public class Contact {
         this.surname = surname;
     }
 
-    public String getEmail() {
+    public Email getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(Email email) {
         this.email = email;
     }
 
-    public String getPhone() {
+    public Phone getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(Phone phone) {
         this.phone = phone;
+    }
+}
+
+class Email{
+    private String home = "";
+    private String work = "";
+
+    public String getHome() {
+        return home;
+    }
+
+    public void setHome(String home) {
+        this.home = home;
+    }
+
+    public String getWork() {
+        return work;
+    }
+
+    public void setWork(String work) {
+        this.work = work;
+    }
+}
+
+class Phone{
+    private String cell = "";
+    private String work = "";
+    private String home = "";
+
+    public String getCell() {
+        return cell;
+    }
+
+    public void setCell(String cell) {
+        this.cell = cell;
+    }
+
+    public String getWork() {
+        return work;
+    }
+
+    public void setWork(String work) {
+        this.work = work;
+    }
+
+    public String getHome() {
+        return home;
+    }
+
+    public void setHome(String home) {
+        this.home = home;
     }
 }

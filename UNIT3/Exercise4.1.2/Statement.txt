@@ -1,0 +1,4 @@
+2. Using the method executeUpdate, modify the previous application to
+insert a new subject into the ‘subjects’ table (for example, ‘Markup
+Languages’, first year). You should print out on the screen the value
+returned by the method.

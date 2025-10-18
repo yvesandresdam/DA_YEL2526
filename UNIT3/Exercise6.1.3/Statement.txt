@@ -1,0 +1,7 @@
+Exercise 6.1.3	
+	3. Add also a new column to ‘subjects’ called ‘course’. It will be a foreign key
+	referencing the column ‘code’ in the table ‘courses’. To know how to write
+	a foreign key in PostgreSQL, check this link. Keep in mind that, before
+	creating the foreign key constraint, you will have to update the column
+	‘subjects.course’ to have valid values (the code of one of the courses in
+	table ‘course’).

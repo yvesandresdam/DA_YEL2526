@@ -1,0 +1,2 @@
+Exercise 5.3.1
+	1. Rewrite the activities in point 4.1 to properly close resources.

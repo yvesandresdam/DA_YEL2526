@@ -1,0 +1,5 @@
+1. Create a Maven project with IntelliJ IDEA to run the previous application.
+Verify that you obtain the desired result. You will have to add the
+PostgreSQL dependency to the POM.XML file in order to properly run the
+application. Modify the application to show also the year in which every
+course is taken. Finally, add an error control block (try … catch …).

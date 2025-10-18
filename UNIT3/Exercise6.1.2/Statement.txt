@@ -1,0 +1,5 @@
+Exercise 6.1.2	
+	2. Using a PreparedStatement, create a new table called ‘courses’, with two
+	columns, code (a serial) and name (a varchar of length 90). Introduce a pair
+	of valid values, like ‘Multiplatform app development’ and ‘Web
+	development’.

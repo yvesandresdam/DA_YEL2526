@@ -1,0 +1,8 @@
+1. Using the PgAdmin4 utility, create a new database called VTInstitute
+(Vocational Training Institute). Within this database, create a new table called
+‘subjects’ with three fields:
+	• Code: a sequence field (find out what a sequence field is in
+	PostgreSQL).
+	• Name: the name of the course, a string with a maximum length of
+	50 chars.
+	• Year: an integer showing in which year is due to be taken the course.

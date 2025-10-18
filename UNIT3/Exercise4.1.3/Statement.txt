@@ -1,0 +1,2 @@
+3. Using either execute or executeUpdate, alter the table ‘subjects’ to
+add a new field, ‘Hours’, an integer showing the yearly hours of the subject.

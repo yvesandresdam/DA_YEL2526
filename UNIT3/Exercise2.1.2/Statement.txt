@@ -1,0 +1,6 @@
+2. Using the Pgadmin Query tool and the SQL INSERT clause, add the following
+data to the ‘subjects’ table:
+	• ‘DATA ACCESS’, second year
+	• ‘DEVELOPMENT ENVIRONMENTS’, first year
+	• ‘DATABASE MANAGEMENT SYSTEMS’, first year
+	• ‘SERVICES AND PROCESSES’, second year

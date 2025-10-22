@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2025-10-22T17:08:36.929511700Z</date>
+  <millis>1761152916929</millis>
+  <nanos>511700</nanos>
+  <sequence>0</sequence>
+  <logger>LoggerInfo</logger>
+  <level>WARNING</level>
+  <class>andres.LogConfig</class>
+  <method>createLogWarning</method>
+  <thread>1</thread>
+  <message>Existe un error al conectar a la base de datos. error en el throw</message>
+</record>
+</log>

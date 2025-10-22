@@ -1,0 +1,2 @@
+oct 22, 2025 7:12:02 P. M. andres.LogConfig createLogWarning
+ADVERTENCIA: Existe un error al conectar a la base de datos. error en el throw
